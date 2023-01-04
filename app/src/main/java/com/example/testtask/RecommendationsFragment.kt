@@ -41,17 +41,15 @@ class RecommendationsFragment : Fragment() {
 
     fun bindCards(swipeModel: SwipeModel){
         if (swipeModel.bottomCard==null){
-            binding.motionLayout.setTransition(R.id.last,R.id.like)
+            binding.motionLayout.setTransition(R.id.last,R.id.likeLast)
             binding.motionLayout.transitionToState(R.id.last)
+            binding.motionLayout.removeView(binding.bottomCard)
         }
         else{
             binding.bottomCard.setBackgroundColor(swipeModel.bottomCard!!.photo)
         }
 
-        if (swipeModel.topCard==null){
-            binding.topCard.visibility = View.GONE
-        }
-        else{
+        if (swipeModel.topCard!=null){
             binding.topCard.setBackgroundColor(swipeModel.topCard!!.photo)
         }
     }

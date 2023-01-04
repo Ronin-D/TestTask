@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Recommendations"
-            android:textColor="@color/black"
+            android:textColor="@color/purple_700"
             android:textSize="27sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

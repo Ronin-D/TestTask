@@ -6,23 +6,12 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\yato0\.android\avd\Pixel_2_API_26.avd" />
+            <type value="SERIAL_NUMBER" />
+            <value value="3a1dc5ae29037ece" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <targetSelectedWithDropDown>
-      <Target>
-        <type value="QUICK_BOOT_TARGET" />
-        <deviceKey>
-          <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\yato0\.android\avd\Pixel_2_API_26.avd" />
-          </Key>
-        </deviceKey>
-      </Target>
-    </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-01-04T10:27:34.705053700Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-01-04T13:05:40.982518300Z" />
   </component>
 </project>

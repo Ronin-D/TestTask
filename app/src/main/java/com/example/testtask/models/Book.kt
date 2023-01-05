@@ -8,5 +8,7 @@ data class Book(
     var author:String = "",
     var countOfPages:Int = 0,
     var genre:String = "",
+    var year:Int = 0,
+    var description:String = "",
     @ColorInt var photo:Int = Color.BLACK
 )

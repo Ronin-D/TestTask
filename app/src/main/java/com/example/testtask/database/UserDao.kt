@@ -12,7 +12,7 @@ import java.util.UUID
 @Dao
 interface UserDao {
     @Query("SELECT * FROM User WHERE uid = (:id)")
-    fun getCurrentUser(id:UUID):LiveData<User?>
+    fun getCurrentUser(id:UUID):User?
 
     @Update
     fun updateUser(user: User)

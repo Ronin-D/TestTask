@@ -7,6 +7,8 @@ import com.example.testtask.database.UserRepository
 class BaseApp:Application() {
     override fun onCreate() {
         super.onCreate()
+        Profile.initialize()
+        DataStoreManager.initialize(this)
         UserRepository.initialize(this)
     }
 }

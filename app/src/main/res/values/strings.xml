@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TestTask</string>
+    <string name="count_of_read_text">Number of books read:%1$d</string>
+    <string name="count_of_liked_books_text">Number of liked books: %1$d</string>
+    <string name="top_of_genres_title">Top 3 genres read:</string>
+    <string name="first_place_text">1. %1$s</string>
+    <string name="second_place_text">2. %1$s</string>
+    <string name="third_place_text">3. %1$s</string>
 </resources>

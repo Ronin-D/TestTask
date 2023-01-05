@@ -1,8 +1,8 @@
-package com.example.testtask
+package com.example.testtask.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.constraintlayout.motion.widget.MotionLayout
+import com.example.testtask.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,4 +15,5 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 }

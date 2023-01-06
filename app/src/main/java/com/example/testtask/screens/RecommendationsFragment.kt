@@ -16,7 +16,6 @@ import com.example.testtask.models.SwipeModel
 import com.example.testtask.models.User
 import com.example.testtask.util.LoadingState
 import com.example.testtask.util.Profile
-import kotlin.math.log
 
 class RecommendationsFragment : Fragment() {
 
@@ -78,6 +77,21 @@ class RecommendationsFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        binding.readItButton.setOnClickListener {
+            val genre = binding.genre.text.toString()
+            profile.user?.let {
+                it.readBooksCnt++
+                val cnt = it.genres.getOrElse(genre){
+                    it.genres[genre] = 0
+                0}
+                it.genres[genre] = cnt+1
+               it.genres.entries.sortedBy { it.value }
+                recommendationsViewModel.updateUser(it)
+            }
+            binding.motionLayout.transitionToState(R.id.like)
+
         }
 
         binding.motionLayout.setTransitionListener(object : TransitionAdapter() {

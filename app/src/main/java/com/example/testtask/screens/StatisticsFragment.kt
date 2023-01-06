@@ -1,7 +1,10 @@
 package com.example.testtask.screens
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +15,27 @@ import com.example.testtask.util.Profile
 
 class StatisticsFragment : Fragment() {
 
+interface Callbacks{
+    fun onBack()
+}
 
-    private lateinit var viewModel: StatisticsViewModel
     private lateinit var  binding: FragmentStatisticsBinding
+    private lateinit var firstPlaceGenre:String
+    private lateinit var secondPlaceGenre:String
+    private lateinit var thirdPlaceGenre:String
     private val user = Profile.get().user
+    private var callbacks:Callbacks? = null
+
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +48,56 @@ class StatisticsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         updateUI()
+        binding.backButton.setOnClickListener {
+            callbacks?.onBack()
+        }
+
+        binding.shareButton.setOnClickListener {
+            Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT,
+                getString
+                    (
+                    R.string.share_statistics_text,
+                    firstPlaceGenre,
+                    secondPlaceGenre,
+                    thirdPlaceGenre,
+                    user?.readBooksCnt?:0,
+                    user?.likedBooksCnt?:0)
+                )
+            }.also {
+                startActivity(it)
+            }
+        }
     }
 
     private fun updateUI(){
-        //binding.countOfReadText.text = getString(R.string.count_of_read_text,profile.user.)
-        binding.countOflikedBooksText.text = getString(R.string.count_of_liked_books_text,user?.likedBooksCnt?:0)
-
+        binding.countOfReadText.text = getString(
+            R.string.count_of_read_text,user?.readBooksCnt?:0)
+        binding.countOflikedBooksText.text = getString(
+            R.string.count_of_liked_books_text,user?.likedBooksCnt?:0)
+       user?.let {
+           var cnt = 1
+           for(elem in it.genres)
+           {
+                if (cnt==1){
+                    binding.firstPlaceText.text = getString(R.string.first_place_text,elem.key)
+                    firstPlaceGenre = elem.key
+                }
+               else if (cnt==2){
+                    binding.secondPlaceText.text = getString(R.string.second_place_text,elem.key)
+                    secondPlaceGenre = elem.key
+               }
+               else if (cnt==3){
+                    binding.thirdPlaceText.text = getString(R.string.third_place_text,elem.key)
+                    thirdPlaceGenre = elem.key
+               }
+               else{
+                   break
+               }
+               cnt++
+           }
+       }
     }
 
     companion object {

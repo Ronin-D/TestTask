@@ -9,5 +9,6 @@ data class User
     (
     @PrimaryKey val uid:UUID = UUID.randomUUID(),
     var likedBooksCnt:Int = 0,
+    var readBooksCnt:Int = 0,
     val genres:MutableMap<String,Int> = mutableMapOf()
     )

@@ -6,4 +6,12 @@
     <string name="first_place_text">1. %1$s</string>
     <string name="second_place_text">2. %1$s</string>
     <string name="third_place_text">3. %1$s</string>
+    <string name="share_statistics_text">
+        Hi, this is my book statistics:\n
+        My top 3 Favorite genres:\n
+        1.%1$s\n
+        2. %2$s\n
+        3.%3$s\n
+        Number of books read: %4$d\n
+        Number of books liked: %5$d</string>
 </resources>

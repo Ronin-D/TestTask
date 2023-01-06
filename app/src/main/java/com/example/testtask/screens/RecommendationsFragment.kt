@@ -121,6 +121,27 @@ class RecommendationsFragment : Fragment() {
                         motionLayout.setTransition(R.id.start, R.id.unlike)
                         recommendationsViewModel.swipe()
                     }
+                    R.id.offScreenWantToRead->{
+                        motionLayout.progress = 0f
+                        motionLayout.setTransition(R.id.start, R.id.unlike)
+                        recommendationsViewModel.swipe()
+                    }
+                    R.id.offScreenPass->{
+                        motionLayout.progress = 0f
+                        motionLayout.setTransition(R.id.start, R.id.unlike)
+                        recommendationsViewModel.swipe()
+                    }
+                    R.id.offScreenWantToReadLast->{
+                        motionLayout.progress = 0f
+                        motionLayout.setTransition(R.id.start, R.id.unlike)
+                        recommendationsViewModel.swipe()
+                    }
+                    R.id.offScreenPassLast->{
+                        motionLayout.progress = 0f
+                        motionLayout.setTransition(R.id.start, R.id.unlike)
+                        recommendationsViewModel.swipe()
+                    }
+
                 }
             }
         })

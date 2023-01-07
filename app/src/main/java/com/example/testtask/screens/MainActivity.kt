@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity(),RecommendationsFragment.Callbacks,Stati
             val fragmnet = RecommendationsFragment.newInstance()
             supportFragmentManager.beginTransaction().add(R.id.fragment_container,fragmnet).commit()
         }
-
     }
 
     override fun onStatistics() {

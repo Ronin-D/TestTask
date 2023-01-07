@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
+import com.bumptech.glide.Glide
 import com.example.testtask.R
 import com.example.testtask.databinding.FragmentRecommendationsBinding
 import com.example.testtask.models.SwipeModel
@@ -47,15 +49,34 @@ class RecommendationsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        updateUI(LoadingState.loadingData)
+    }
+
     override fun onStart() {
         super.onStart()
-
         binding.resutButton.setOnClickListener {
             callbacks?.onStatistics()
         }
 
+        binding.likeButton.setOnClickListener {
+            binding.motionLayout.transitionToState(R.id.like)
+        }
+
+        binding.dislikeButton.setOnClickListener {
+            binding.motionLayout.transitionToState(R.id.unlike)
+        }
+
         recommendationsViewModel.books.observe(this){
-            recommendationsViewModel.updateCards()
+            if (it!=null){
+                updateUI(LoadingState.stopLoading)
+                recommendationsViewModel.updateCards()
+            }
+            else{
+                updateUI(LoadingState.failLoading)
+            }
+
         }
         recommendationsViewModel.swipeModel.observe(viewLifecycleOwner){
             bindCards(it)
@@ -63,7 +84,6 @@ class RecommendationsFragment : Fragment() {
         recommendationsViewModel.isDbEmpty().observe(viewLifecycleOwner){
             if (it){
                 val user = User()
-                updateUI(LoadingState.loadingData)
                 recommendationsViewModel.initUser(user)
 
             }
@@ -73,7 +93,6 @@ class RecommendationsFragment : Fragment() {
                         if (profile.user==null){
                             profile.user = user
                         }
-                        updateUI(LoadingState.stopLoading)
                     }
                 }
             }
@@ -100,6 +119,7 @@ class RecommendationsFragment : Fragment() {
                     R.id.offScreenUnlike->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
+                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenLike -> {
@@ -124,21 +144,25 @@ class RecommendationsFragment : Fragment() {
                     R.id.offScreenWantToRead->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
+                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenPass->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
+                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenWantToReadLast->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
+                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenPassLast->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
+                        //do something
                         recommendationsViewModel.swipe()
                     }
 
@@ -152,7 +176,10 @@ class RecommendationsFragment : Fragment() {
         if (swipeModel.topCard!=null){
             binding.title.text = swipeModel.topCard!!.title
             binding.authorFullName.text = swipeModel.topCard!!.author
-            binding.bookImage.setBackgroundColor(swipeModel.topCard!!.photo)
+            Glide.with(requireActivity())
+                .load(swipeModel.topCard!!.imageUrl)
+                .placeholder(R.color.black)
+                .into(binding.bookImage)
             binding.year.text = swipeModel.topCard!!.year.toString()
             binding.genre.text = swipeModel.topCard!!.genre
             binding.countOfPages.text = swipeModel.topCard!!.countOfPages.toString()
@@ -171,7 +198,10 @@ class RecommendationsFragment : Fragment() {
         else {
             binding.titleBottom.text = swipeModel.bottomCard!!.title
             binding.authorFullNameBottom.text = swipeModel.bottomCard!!.author
-            binding.bookImageBottom.setBackgroundColor(swipeModel.bottomCard!!.photo)
+            Glide.with(requireActivity())
+                .load(swipeModel.bottomCard!!.imageUrl)
+                .placeholder(R.color.black)
+                .into(binding.bookImage)
             binding.yearBottom.text = swipeModel.bottomCard!!.year.toString()
             binding.genreBottom.text = swipeModel.bottomCard!!.genre
             binding.countOfPagesBottom.text = swipeModel.bottomCard!!.countOfPages.toString()
@@ -182,10 +212,27 @@ class RecommendationsFragment : Fragment() {
         if (state==LoadingState.loadingData){
             binding.progressBar.visibility = View.VISIBLE
             binding.motionLayout.visibility = View.GONE
+            binding.likeButton.visibility = View.GONE
+            binding.dislikeButton.visibility = View.GONE
+            binding.resutButton.visibility = View.GONE
+            binding.readItButton.visibility = View.GONE
         }
         else if (state==LoadingState.stopLoading){
             binding.progressBar.visibility = View.GONE
             binding.motionLayout.visibility = View.VISIBLE
+            binding.likeButton.visibility = View.VISIBLE
+            binding.dislikeButton.visibility = View.VISIBLE
+            binding.resutButton.visibility = View.VISIBLE
+            binding.readItButton.visibility = View.VISIBLE
+        }
+        else{
+            binding.motionLayout.visibility  = View.GONE
+            binding.progressBar.visibility = View.GONE
+            binding.likeButton.visibility = View.GONE
+            binding.dislikeButton.visibility = View.GONE
+            binding.resutButton.visibility = View.GONE
+            binding.readItButton.visibility = View.GONE
+            Toast.makeText(requireContext(),"Fail",Toast.LENGTH_SHORT).show()
         }
     }
 

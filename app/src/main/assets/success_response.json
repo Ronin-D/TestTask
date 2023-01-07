@@ -1,0 +1,56 @@
+{
+  "data": {
+    "books": [
+      {
+        "id": "181913649",
+        "title": "Математический анализ для чайников том 1",
+        "imageUrl": "https://klike.net/uploads/posts/2020-07/1594969554_12.jpg",
+        "author": "Den star",
+        "genre": "Horror",
+        "pagesСount": 150,
+        "year": 2007,
+        "description": "abacaba"
+      },
+      {
+        "id": "181913659",
+        "title": "Математический анализ для чайников том 2",
+        "imageUrl": "https://klike.net/uploads/posts/2020-07/1594969505_17.jpg",
+        "author": "Den star",
+        "genre": "Horror",
+        "pagesСount": 150,
+        "year": 2007,
+        "description": "abacaba"
+      },
+      {
+        "id": "181913669",
+        "title": "Математический анализ для чайников том 3",
+        "imageUrl": "https://klike.net/uploads/posts/2020-07/1594969565_10.jpeg",
+        "author": "Den star",
+        "genre": "Horror",
+        "pagesСount": 150,
+        "year": 2007,
+        "description": "abacaba"
+      },
+      {
+        "id": "181913679",
+        "title": "Математический анализ для чайников том 4",
+        "imageUrl": "https://klike.net/uploads/posts/2020-07/1594969495_11.jpg",
+        "author": "Den star",
+        "genre": "Horror",
+        "pagesСount": 150,
+        "year": 2007,
+        "description": "abacaba"
+      },
+      {
+        "id": "181913689",
+        "title": "Математический анализ для чайников том 5",
+        "imageUrl": "https://klike.net/uploads/posts/2020-07/1594969554_12.jpg",
+        "author": "Den star",
+        "genre": "Horror",
+        "pagesСount": 150,
+        "year": 2007,
+        "description": "abacaba"
+      }
+    ]
+  }
+}

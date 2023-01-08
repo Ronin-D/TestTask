@@ -148,7 +148,6 @@ class RecommendationsFragment : Fragment() {
                         profile.user?.let { recommendationsViewModel.updateUser(it)}
                         motionLayout.setTransition(R.id.start, R.id.unlike)
                         recommendationsViewModel.swipe()
-                        //disableButtons(true)
                     }
                     R.id.offScreenLikeLast->{
                         motionLayout.progress = 0f
@@ -238,6 +237,7 @@ class RecommendationsFragment : Fragment() {
             binding.genreBottom.text = swipeModel.bottomCard!!.genre
             binding.countOfPagesBottom.text = swipeModel.bottomCard!!.countOfPages.toString()
         }
+        disableButtons(true)
     }
 
     private fun updateUI(state: LoadingState){

@@ -3,6 +3,7 @@ package com.example.testtask.screens
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -98,43 +99,12 @@ class RecommendationsFragment : Fragment() {
         }
 
         binding.readItButton.setOnClickListener {
-            enableButtons(true)
-            val genre = binding.genre.text.toString()
-            profile.user?.let { user ->
-                user.readBooksCnt++
-                val cnt = user.genres.getOrElse(genre){
-                    user.genres[genre] = 0
-                0}
-                user.genres[genre] = cnt+1
-                user.genres =  user.genres.toList().sortedBy { it.second }.asReversed().toMap() as MutableMap
-                recommendationsViewModel.updateUser(user)
-            }
-            binding.motionLayout.transitionToState(R.id.like)
-
+            binding.motionLayout.transitionToState(R.id.readIt)
         }
 
         binding.motionLayout.setTransitionListener(object : TransitionAdapter() {
             override fun onTransitionCompleted(motionLayout: MotionLayout, currentId: Int) {
                 when (currentId) {
-                    R.id.like->{
-                        enableButtons(false)
-                    }
-                    R.id.unlike->{
-                        enableButtons(false)
-                    }
-                    R.id.wantToRead->{
-                        enableButtons(false)
-                    }
-                    R.id.pass->{
-                        enableButtons(false)
-                    }
-                    R.id.likeLast->{
-                        enableButtons(false)
-                    }
-                    R.id.unlikeLast->{
-                        enableButtons(false)
-                    }
-
                     R.id.offScreenUnlike->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
@@ -142,15 +112,16 @@ class RecommendationsFragment : Fragment() {
                     }
                     R.id.offScreenLike -> {
                         motionLayout.progress = 0f
-                        profile.user?.let {it.likedBooksCnt++}
-                        profile.user?.let { recommendationsViewModel.updateUser(it)}
+                        motionLayout.setTransition(R.id.start, R.id.unlike)
+                        recommendationsViewModel.swipe()
+                    }
+                    R.id.offScreenReadIt -> {
+                        motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenLikeLast->{
                         motionLayout.progress = 0f
-                        profile.user?.let {it.likedBooksCnt++}
-                        profile.user?.let { recommendationsViewModel.updateUser(it)}
                         motionLayout.setTransition(R.id.start, R.id.unlike)
                         recommendationsViewModel.swipe()
                     }
@@ -179,9 +150,92 @@ class RecommendationsFragment : Fragment() {
                         motionLayout.setTransition(R.id.start, R.id.unlike)
                         recommendationsViewModel.swipe()
                     }
+                }
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+                super.onTransitionChange(motionLayout, startId, endId, progress)
+                when(startId){
+                    R.id.like->{
+                        if (progress==1f){
+                            enableButtons(true)
+                            profile.user?.let {it.likedBooksCnt++}
+                            profile.user?.let { recommendationsViewModel.updateUser(it)}
+                        }
+                        else{
+                            enableButtons(false)
+                        }
+                    }
+                    R.id.unlike->{
+                        if (progress==1f){
+                            enableButtons(true)
+                        }
+                        else{
+                            enableButtons(false)
+                        }
+                    }
+                    R.id.wantToRead->{
+                        if (progress==1f){
+                            enableButtons(true)
+                        }
+                        else{
+                            enableButtons(false)
+                        }
+                    }
+                    R.id.readIt->{
+                        if (progress==1f){
+                            enableButtons(true)
+                            val genre = binding.genre.text.toString()
+                            profile.user?.let { user ->
+                                user.readBooksCnt++
+                                val cnt = user.genres.getOrElse(genre) {
+                                    user.genres[genre] = 0
+                                    0
+                                }
+                                user.genres[genre] = cnt+1
+                                user.genres =  user.genres.toList().sortedBy { it.second }.asReversed().toMap().toMutableMap()
+                                recommendationsViewModel.updateUser(user)
+                            }
+                        }
+                        else{
+                            enableButtons(false)
+                        }
+                    }
+                    R.id.pass->{
+                        if (progress==1f){
+                            enableButtons(true)
+                        }
+                        else{
+                            enableButtons(false)
+                        }
+                    }
+                    R.id.likeLast->{
+                        if (progress==1f){
+                            enableButtons(true)
+                            profile.user?.let {it.likedBooksCnt++}
+                            profile.user?.let { recommendationsViewModel.updateUser(it)}
+                        }
+                        else{
+                            enableButtons(false)
+                        }
+                    }
+                    R.id.unlikeLast->{
+                        if (progress==1f){
+                            enableButtons(true)
+                        }
+                        else{
+                            enableButtons(false)
+                        }
+                    }
                     else->{
                         enableButtons(true)
                     }
+
                 }
             }
         })
@@ -256,7 +310,6 @@ class RecommendationsFragment : Fragment() {
                 .placeholder(R.color.white)
                 .into(binding.bookImage)
         }
-        enableButtons(true)
     }
 
     private fun updateUI(state: LoadingState){

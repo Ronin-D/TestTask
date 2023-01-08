@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Recommendations"
+            android:text="@string/recommendations_screen_title"
             android:textColor="@color/purple_700"
             android:textSize="27sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="16dp"
-            android:text="pass"
+            android:text="@string/pass_button_text"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toTopOf="@+id/resutButton"
             app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -44,7 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="read it "
+            android:text="@string/read_it_button_text"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toTopOf="@+id/resutButton"
             app:layout_constraintLeft_toRightOf="@id/dislikeButton"
             app:layout_constraintRight_toLeftOf="@id/likeButton" />
@@ -55,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            android:text="like"
+            android:text="@string/like_button_text"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toTopOf="@+id/resutButton"
             app:layout_constraintRight_toRightOf="parent" />
 
@@ -64,7 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="See resuilts"
+            android:text="@string/show_statistics_button_text"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/likeButton"
             app:layout_constraintStart_toEndOf="@+id/dislikeButton" />
@@ -89,7 +93,7 @@
                 android:layout_width="270dp"
                 android:layout_height="424dp"
                 android:shadowColor="@color/black"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,8 +101,9 @@
 
                 <ImageView
                     android:id="@+id/bookImageBottom"
+                    android:scaleType="fitXY"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="250dp"
                     android:background="@color/black"
                     app:layout_constraintBottom_toTopOf="@id/titleBottom"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -106,10 +111,23 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/descriptionTextBootom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/genreBottom"
+                    tools:text="Description" />
+
+                <TextView
                     android:id="@+id/titleBottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
                     android:text="Title"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -162,27 +180,43 @@
                 android:layout_width="270dp"
                 android:layout_height="424dp"
                 android:elevation="10dp"
+                android:background="@color/grey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <TextView
+                    android:id="@+id/descriptionText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/genre"
+                    tools:text="Description" />
+
                 <ImageView
                     android:id="@+id/bookImage"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:background="@color/black"
+                    android:scaleType="fitXY"
+                    android:layout_height="250dp"
                     app:layout_constraintBottom_toTopOf="@id/title"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
                     android:text="Title"
+                    android:textColor="@color/black"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/bookImage" />
@@ -191,21 +225,23 @@
                     android:id="@+id/countOfPages"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="150"
+                    android:textColor="@color/black"
                     app:layout_constraintLeft_toRightOf="@id/year"
-                    app:layout_constraintTop_toBottomOf="@id/title" />
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    tools:text="150 стр." />
 
                 <TextView
                     android:id="@+id/genre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="Detective"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/authorFullName" />
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/authorFullName" />
 
                 <TextView
                     android:id="@+id/authorFullName"
@@ -214,6 +250,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:text="authorFullName"
+                    android:textColor="@color/black"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -221,9 +258,10 @@
                     android:id="@+id/year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:text="2007"
+                    android:textColor="@color/black"
                     app:layout_constraintLeft_toRightOf="@id/authorFullName"
                     app:layout_constraintTop_toBottomOf="@id/title" />
 

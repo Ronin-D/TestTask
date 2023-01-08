@@ -27,7 +27,6 @@ class BookServiceRepository {
         val request = bookServiceApi.fetchBooks()
         request.enqueue(object:Callback<ServiceResponse>{
             override fun onFailure(call: Call<ServiceResponse>, t: Throwable) {
-                //do something else
                 responseLiveData.postValue(null)
             }
 

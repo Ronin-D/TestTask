@@ -45,7 +45,6 @@ class RecommendationsViewModel : ViewModel() {
 
     val books = bookServiceRepository.fetchContents()
 
-
     private var currentIndex:Int = 0
 
     private val topCard

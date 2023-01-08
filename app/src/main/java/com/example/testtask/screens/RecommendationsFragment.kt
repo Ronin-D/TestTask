@@ -3,7 +3,6 @@ package com.example.testtask.screens
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import androidx.constraintlayout.motion.widget.TransitionAdapter
 import com.bumptech.glide.Glide
 import com.example.testtask.R
 import com.example.testtask.databinding.FragmentRecommendationsBinding
-import com.example.testtask.models.Book
 import com.example.testtask.models.SwipeModel
 import com.example.testtask.models.User
 import com.example.testtask.util.LoadingState
@@ -100,16 +98,16 @@ class RecommendationsFragment : Fragment() {
         }
 
         binding.readItButton.setOnClickListener {
-            disableButtons(true)
+            enableButtons(true)
             val genre = binding.genre.text.toString()
-            profile.user?.let {
-                it.readBooksCnt++
-                val cnt = it.genres.getOrElse(genre){
-                    it.genres[genre] = 0
+            profile.user?.let { user ->
+                user.readBooksCnt++
+                val cnt = user.genres.getOrElse(genre){
+                    user.genres[genre] = 0
                 0}
-                it.genres[genre] = cnt+1
-               it.genres.entries.sortedBy { it.value }
-                recommendationsViewModel.updateUser(it)
+                user.genres[genre] = cnt+1
+                user.genres =  user.genres.toList().sortedBy { it.second }.asReversed().toMap() as MutableMap
+                recommendationsViewModel.updateUser(user)
             }
             binding.motionLayout.transitionToState(R.id.like)
 
@@ -119,22 +117,22 @@ class RecommendationsFragment : Fragment() {
             override fun onTransitionCompleted(motionLayout: MotionLayout, currentId: Int) {
                 when (currentId) {
                     R.id.like->{
-                        disableButtons(false)
+                        enableButtons(false)
                     }
                     R.id.unlike->{
-                        disableButtons(false)
+                        enableButtons(false)
                     }
                     R.id.wantToRead->{
-                        disableButtons(false)
+                        enableButtons(false)
                     }
                     R.id.pass->{
-                        disableButtons(false)
+                        enableButtons(false)
                     }
                     R.id.likeLast->{
-                        disableButtons(false)
+                        enableButtons(false)
                     }
                     R.id.unlikeLast->{
-                        disableButtons(false)
+                        enableButtons(false)
                     }
 
                     R.id.offScreenUnlike->{
@@ -182,90 +180,120 @@ class RecommendationsFragment : Fragment() {
                         recommendationsViewModel.swipe()
                     }
                     else->{
-                        disableButtons(true)
+                        enableButtons(true)
                     }
                 }
             }
         })
     }
 
-    private fun disableButtons(isEnabled:Boolean){
+    private fun enableButtons(isEnabled:Boolean){
         if (isEnabled){
-            binding.likeButton.isEnabled = true
-            binding.dislikeButton.isEnabled = true
-            binding.readItButton.isEnabled = true
+            binding.apply {
+                likeButton.isEnabled = true
+                dislikeButton.isEnabled = true
+                readItButton.isEnabled = true
+                resutButton.isEnabled = true
+            }
+
         }
         else{
-            binding.likeButton.isEnabled = false
-            binding.dislikeButton.isEnabled = false
-            binding.readItButton.isEnabled = false
+            binding.apply {
+                likeButton.isEnabled = false
+                dislikeButton.isEnabled = false
+                readItButton.isEnabled = false
+                resutButton.isEnabled = false
+            }
+
         }
     }
 
     private fun bindCards(swipeModel: SwipeModel){
 
         if (swipeModel.topCard!=null){
-            binding.title.text = swipeModel.topCard!!.title
-            binding.authorFullName.text = swipeModel.topCard!!.author
+            binding.apply {
+                title.text = swipeModel.topCard!!.title
+                authorFullName.text = swipeModel.topCard!!.author
+                year.text = swipeModel.topCard!!.year.toString()
+                genre.text = swipeModel.topCard!!.genre
+                countOfPages.text = swipeModel.topCard!!.countOfPages.toString()
+                descriptionText.text = swipeModel.topCard!!.description
+            }
+
             Glide.with(requireActivity())
                 .load(swipeModel.topCard!!.imageUrl)
                 .placeholder(R.color.black)
                 .into(binding.bookImage)
-            binding.year.text = swipeModel.topCard!!.year.toString()
-            binding.genre.text = swipeModel.topCard!!.genre
-            binding.countOfPages.text = swipeModel.topCard!!.countOfPages.toString()
         }
         else{
-            binding.motionLayout.removeView(binding.topCard)
-            binding.likeButton.visibility = View.GONE
-            binding.dislikeButton.visibility = View.GONE
-            binding.readItButton.visibility = View.GONE
+            binding.apply {
+                motionLayout.removeView(binding.topCard)
+                likeButton.visibility = View.GONE
+                dislikeButton.visibility = View.GONE
+                readItButton.visibility = View.GONE
+            }
+
         }
         if (swipeModel.bottomCard==null){
-            binding.motionLayout.setTransition(R.id.last, R.id.likeLast)
-            binding.motionLayout.transitionToState(R.id.last)
-            binding.motionLayout.removeView(binding.bottomCard)
+            binding.apply {
+                motionLayout.setTransition(R.id.last, R.id.likeLast)
+                motionLayout.transitionToState(R.id.last)
+                motionLayout.removeView(binding.bottomCard)
+            }
+
         }
         else {
-            binding.titleBottom.text = swipeModel.bottomCard!!.title
-            binding.authorFullNameBottom.text = swipeModel.bottomCard!!.author
+            binding.apply {
+                titleBottom.text = swipeModel.bottomCard!!.title
+                authorFullNameBottom.text = swipeModel.bottomCard!!.author
+                yearBottom.text = swipeModel.bottomCard!!.year.toString()
+                genreBottom.text = swipeModel.bottomCard!!.genre
+                countOfPagesBottom.text = swipeModel.bottomCard!!.countOfPages.toString()
+                descriptionText.text = swipeModel.bottomCard!!.description
+            }
             Glide.with(requireActivity())
                 .load(swipeModel.bottomCard!!.imageUrl)
-                .placeholder(R.color.black)
+                .placeholder(R.color.white)
                 .into(binding.bookImage)
-            binding.yearBottom.text = swipeModel.bottomCard!!.year.toString()
-            binding.genreBottom.text = swipeModel.bottomCard!!.genre
-            binding.countOfPagesBottom.text = swipeModel.bottomCard!!.countOfPages.toString()
         }
-        disableButtons(true)
+        enableButtons(true)
     }
 
     private fun updateUI(state: LoadingState){
         when (state) {
             LoadingState.loadingData -> {
-                binding.progressBar.visibility = View.VISIBLE
-                binding.motionLayout.visibility = View.GONE
-                binding.likeButton.visibility = View.GONE
-                binding.dislikeButton.visibility = View.GONE
-                binding.resutButton.visibility = View.GONE
-                binding.readItButton.visibility = View.GONE
+                binding.apply {
+                    progressBar.visibility = View.VISIBLE
+                    motionLayout.visibility = View.GONE
+                    likeButton.visibility = View.GONE
+                    dislikeButton.visibility = View.GONE
+                    resutButton.visibility = View.GONE
+                    readItButton.visibility = View.GONE
+                }
+
             }
             LoadingState.stopLoading -> {
-                binding.progressBar.visibility = View.GONE
-                binding.motionLayout.visibility = View.VISIBLE
-                binding.likeButton.visibility = View.VISIBLE
-                binding.dislikeButton.visibility = View.VISIBLE
-                binding.resutButton.visibility = View.VISIBLE
-                binding.readItButton.visibility = View.VISIBLE
+                binding.apply {
+                    progressBar.visibility = View.GONE
+                    motionLayout.visibility = View.VISIBLE
+                    likeButton.visibility = View.VISIBLE
+                    dislikeButton.visibility = View.VISIBLE
+                    resutButton.visibility = View.VISIBLE
+                    readItButton.visibility = View.VISIBLE
+                }
+
             }
-            else -> {
-                binding.motionLayout.visibility  = View.GONE
-                binding.progressBar.visibility = View.GONE
-                binding.likeButton.visibility = View.GONE
-                binding.dislikeButton.visibility = View.GONE
-                binding.resutButton.visibility = View.GONE
-                binding.readItButton.visibility = View.GONE
-                Toast.makeText(requireContext(),"Fail",Toast.LENGTH_SHORT).show()
+            LoadingState.failLoading-> {
+                binding.apply {
+                    motionLayout.visibility  = View.GONE
+                    progressBar.visibility = View.GONE
+                    likeButton.visibility = View.GONE
+                    dislikeButton.visibility = View.GONE
+                    resutButton.visibility = View.GONE
+                    readItButton.visibility = View.GONE
+                }
+
+                Toast.makeText(requireContext(),"Fail to load",Toast.LENGTH_SHORT).show()
             }
         }
     }

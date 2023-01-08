@@ -63,9 +63,9 @@ interface Callbacks{
                 getString
                     (
                     R.string.share_statistics_text,
-                    firstPlaceGenre?:"Do not have yet",
-                    secondPlaceGenre?:"Do not have yet",
-                    thirdPlaceGenre?:"Do not have yet",
+                    firstPlaceGenre?:getString(R.string.unset_genre_text),
+                    secondPlaceGenre?:getString(R.string.unset_genre_text),
+                    thirdPlaceGenre?:getString(R.string.unset_genre_text),
                     user?.readBooksCnt?:0,
                     user?.likedBooksCnt?:0)
                 )

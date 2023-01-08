@@ -14,4 +14,12 @@
         3.%3$s\n
         Number of books read: %4$d\n
         Number of books liked: %5$d</string>
+    <string name="unset_genre_text">Don\'t have yet</string>
+    <string name="share_button_text">Share</string>
+    <string name="statistics_title">Statistics</string>
+    <string name="pass_button_text">Pass</string>
+    <string name="like_button_text">Like</string>
+    <string name="show_statistics_button_text">See results</string>
+    <string name="read_it_button_text">Read it</string>
+    <string name="recommendations_screen_title">Recommendations</string>
 </resources>

@@ -20,9 +20,9 @@ interface Callbacks{
 }
 
     private lateinit var  binding: FragmentStatisticsBinding
-    private lateinit var firstPlaceGenre:String
-    private lateinit var secondPlaceGenre:String
-    private lateinit var thirdPlaceGenre:String
+    private  var firstPlaceGenre:String? = null
+    private  var secondPlaceGenre:String? = null
+    private  var thirdPlaceGenre:String? = null
     private val user = Profile.get().user
     private var callbacks:Callbacks? = null
 
@@ -45,9 +45,13 @@ interface Callbacks{
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        updateUI()
+    }
+
     override fun onStart() {
         super.onStart()
-        updateUI()
         binding.backButton.setOnClickListener {
             callbacks?.onBack()
         }
@@ -59,9 +63,9 @@ interface Callbacks{
                 getString
                     (
                     R.string.share_statistics_text,
-                    firstPlaceGenre,
-                    secondPlaceGenre,
-                    thirdPlaceGenre,
+                    firstPlaceGenre?:"Do not have yet",
+                    secondPlaceGenre?:"Do not have yet",
+                    thirdPlaceGenre?:"Do not have yet",
                     user?.readBooksCnt?:0,
                     user?.likedBooksCnt?:0)
                 )
@@ -81,16 +85,17 @@ interface Callbacks{
            for(elem in it.genres)
            {
                 if (cnt==1){
-                    binding.firstPlaceText.text = getString(R.string.first_place_text,elem.key)
                     firstPlaceGenre = elem.key
+                    binding.firstPlaceText.text = getString(R.string.first_place_text,elem.key)
                 }
                else if (cnt==2){
-                    binding.secondPlaceText.text = getString(R.string.second_place_text,elem.key)
                     secondPlaceGenre = elem.key
+                    binding.secondPlaceText.text = getString(R.string.second_place_text,elem.key)
+
                }
                else if (cnt==3){
-                    binding.thirdPlaceText.text = getString(R.string.third_place_text,elem.key)
                     thirdPlaceGenre = elem.key
+                    binding.thirdPlaceText.text = getString(R.string.third_place_text,elem.key)
                }
                else{
                    break

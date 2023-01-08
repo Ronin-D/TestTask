@@ -14,6 +14,7 @@ import androidx.constraintlayout.motion.widget.TransitionAdapter
 import com.bumptech.glide.Glide
 import com.example.testtask.R
 import com.example.testtask.databinding.FragmentRecommendationsBinding
+import com.example.testtask.models.Book
 import com.example.testtask.models.SwipeModel
 import com.example.testtask.models.User
 import com.example.testtask.util.LoadingState
@@ -99,6 +100,7 @@ class RecommendationsFragment : Fragment() {
         }
 
         binding.readItButton.setOnClickListener {
+            disableButtons(true)
             val genre = binding.genre.text.toString()
             profile.user?.let {
                 it.readBooksCnt++
@@ -116,10 +118,28 @@ class RecommendationsFragment : Fragment() {
         binding.motionLayout.setTransitionListener(object : TransitionAdapter() {
             override fun onTransitionCompleted(motionLayout: MotionLayout, currentId: Int) {
                 when (currentId) {
+                    R.id.like->{
+                        disableButtons(false)
+                    }
+                    R.id.unlike->{
+                        disableButtons(false)
+                    }
+                    R.id.wantToRead->{
+                        disableButtons(false)
+                    }
+                    R.id.pass->{
+                        disableButtons(false)
+                    }
+                    R.id.likeLast->{
+                        disableButtons(false)
+                    }
+                    R.id.unlikeLast->{
+                        disableButtons(false)
+                    }
+
                     R.id.offScreenUnlike->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
-                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenLike -> {
@@ -128,6 +148,7 @@ class RecommendationsFragment : Fragment() {
                         profile.user?.let { recommendationsViewModel.updateUser(it)}
                         motionLayout.setTransition(R.id.start, R.id.unlike)
                         recommendationsViewModel.swipe()
+                        //disableButtons(true)
                     }
                     R.id.offScreenLikeLast->{
                         motionLayout.progress = 0f
@@ -144,31 +165,42 @@ class RecommendationsFragment : Fragment() {
                     R.id.offScreenWantToRead->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
-                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenPass->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
-                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenWantToReadLast->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
-                        //do something
                         recommendationsViewModel.swipe()
                     }
                     R.id.offScreenPassLast->{
                         motionLayout.progress = 0f
                         motionLayout.setTransition(R.id.start, R.id.unlike)
-                        //do something
                         recommendationsViewModel.swipe()
                     }
-
+                    else->{
+                        disableButtons(true)
+                    }
                 }
             }
         })
+    }
+
+    private fun disableButtons(isEnabled:Boolean){
+        if (isEnabled){
+            binding.likeButton.isEnabled = true
+            binding.dislikeButton.isEnabled = true
+            binding.readItButton.isEnabled = true
+        }
+        else{
+            binding.likeButton.isEnabled = false
+            binding.dislikeButton.isEnabled = false
+            binding.readItButton.isEnabled = false
+        }
     }
 
     private fun bindCards(swipeModel: SwipeModel){
@@ -209,30 +241,32 @@ class RecommendationsFragment : Fragment() {
     }
 
     private fun updateUI(state: LoadingState){
-        if (state==LoadingState.loadingData){
-            binding.progressBar.visibility = View.VISIBLE
-            binding.motionLayout.visibility = View.GONE
-            binding.likeButton.visibility = View.GONE
-            binding.dislikeButton.visibility = View.GONE
-            binding.resutButton.visibility = View.GONE
-            binding.readItButton.visibility = View.GONE
-        }
-        else if (state==LoadingState.stopLoading){
-            binding.progressBar.visibility = View.GONE
-            binding.motionLayout.visibility = View.VISIBLE
-            binding.likeButton.visibility = View.VISIBLE
-            binding.dislikeButton.visibility = View.VISIBLE
-            binding.resutButton.visibility = View.VISIBLE
-            binding.readItButton.visibility = View.VISIBLE
-        }
-        else{
-            binding.motionLayout.visibility  = View.GONE
-            binding.progressBar.visibility = View.GONE
-            binding.likeButton.visibility = View.GONE
-            binding.dislikeButton.visibility = View.GONE
-            binding.resutButton.visibility = View.GONE
-            binding.readItButton.visibility = View.GONE
-            Toast.makeText(requireContext(),"Fail",Toast.LENGTH_SHORT).show()
+        when (state) {
+            LoadingState.loadingData -> {
+                binding.progressBar.visibility = View.VISIBLE
+                binding.motionLayout.visibility = View.GONE
+                binding.likeButton.visibility = View.GONE
+                binding.dislikeButton.visibility = View.GONE
+                binding.resutButton.visibility = View.GONE
+                binding.readItButton.visibility = View.GONE
+            }
+            LoadingState.stopLoading -> {
+                binding.progressBar.visibility = View.GONE
+                binding.motionLayout.visibility = View.VISIBLE
+                binding.likeButton.visibility = View.VISIBLE
+                binding.dislikeButton.visibility = View.VISIBLE
+                binding.resutButton.visibility = View.VISIBLE
+                binding.readItButton.visibility = View.VISIBLE
+            }
+            else -> {
+                binding.motionLayout.visibility  = View.GONE
+                binding.progressBar.visibility = View.GONE
+                binding.likeButton.visibility = View.GONE
+                binding.dislikeButton.visibility = View.GONE
+                binding.resutButton.visibility = View.GONE
+                binding.readItButton.visibility = View.GONE
+                Toast.makeText(requireContext(),"Fail",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

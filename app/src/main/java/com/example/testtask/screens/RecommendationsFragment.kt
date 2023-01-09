@@ -281,7 +281,7 @@ class RecommendationsFragment : Fragment() {
         }
         else{
             binding.apply {
-                motionLayout.removeView(binding.topCard)
+                motionLayout.visibility = View.GONE
                 likeButton.visibility = View.GONE
                 dislikeButton.visibility = View.GONE
                 readItButton.visibility = View.GONE
